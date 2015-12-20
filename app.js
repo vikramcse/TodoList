@@ -14,17 +14,22 @@
 		done: document.getElementById('done')
 	};
 
-	var createTask = function(task, onCheck) {
+	var createTask = function(task, onCheck, onRemove) {
 		var el = document.createElement('li');
 		var checkbox = document.createElement('input');
 		var label = document.createElement('span');
+		var remove = document.createElement('button');
 
 		checkbox.type = 'checkbox';
 		checkbox.addEventListener('click', onCheck);
 		label.textContent = task;
+		remove.id = 'remove'
+		remove.textContent = 'X'
+		remove.addEventListener('click', onRemove);
 
 		el.appendChild(checkbox);
 		el.appendChild(label);
+		el.appendChild(remove);
 
 		return el;
 	};
@@ -51,10 +56,15 @@
 		}
 	};
 
+	var onRemove = function(e) {
+		var parent = e.target.parentNode.parentNode
+		parent.removeChild(e.target.parentNode);
+	};
+
 	var addInput = function() {
 		var text = input.value.trim();
 		if (text.length > 0) {
-			addTodo(createTask(text, onCheck));
+			addTodo(createTask(text, onCheck, onRemove));
 			input.value = '';
 		}
 	};
